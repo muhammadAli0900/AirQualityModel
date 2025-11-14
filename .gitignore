@@ -1,0 +1,38 @@
+# ========================
+# PYTHON CACHE & BUILD FILES
+# ========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# ========================
+# JUPYTER NOTEBOOK CHECKPOINTS
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# VIRTUAL ENVIRONMENTS
+# ========================
+venv/
+.env/
+
+# ========================
+# OS-SPECIFIC FILES
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# LOG FILES
+# ========================
+*.log
+
+# ========================
+# ARCHIVE FILES (OPTIONAL)
+# These are safe to ignore. Data files WILL be included.
+# ========================
+*.zip
+*.tar.gz
+*.rar
