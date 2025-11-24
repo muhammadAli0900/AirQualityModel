@@ -6,6 +6,11 @@ __pycache__/
 *.pyo
 *.pyd
 *.db
+# ========================
+# Not needed py files
+# ========================
+extarctingcsvnames.py
+
 
 # ========================
 # JUPYTER NOTEBOOK CHECKPOINTS
@@ -28,6 +33,7 @@ Thumbs.db
 # LOG FILES
 # ========================
 *.log
+Structure.ini
 
 # ========================
 # ARCHIVE FILES (OPTIONAL)
