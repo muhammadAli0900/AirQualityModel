@@ -1,152 +1,109 @@
-# Air Quality Dataset Documentation
+# Air Quality Prediction — Pakistan
 
-This document explains the meaning of each column in the dataset, including abbreviations, definitions, and how each variable affects **main_aqi**.
+A machine learning project that predicts the Air Quality Index (AQI) for major Pakistani cities using real pollution and weather data collected from 2021 to 2024.
 
----
-
-## **What is `main_aqi`?**
-
-**main_aqi (Air Quality Index)** is a standardized numerical value that represents how polluted the air is. Higher AQI = worse air quality.
-
-AQI is calculated using major pollutants: **PM2.5, PM10, NO2, SO2, CO, O3**. Weather conditions indirectly affect AQI by influencing how pollutants spread or accumulate.
+![Python](https://img.shields.io/badge/Python-3.10-blue) ![Scikit-learn](https://img.shields.io/badge/Model-Random%20Forest-orange) ![Streamlit](https://img.shields.io/badge/App-Streamlit-red)
 
 ---
 
-# **Primary Variables (Pollutants — Direct Impact on AQI)**
+## Why this project
 
-These compounds are used directly to compute AQI. Higher concentrations usually increase AQI.
-
-### **1. `components_pm2_5` — PM2.5 (Fine Particulate Matter ≤ 2.5 µm)**
-
-* Very small particles from combustion, smoke, industry
-* Penetrates deep into lungs
-* **Strongest contributor to AQI**
-
-### **2. `components_pm10` — PM10 (Particulate Matter ≤ 10 µm)**
-
-* Larger dust particles from roads, construction
-* Raises AQI, especially in dry/dusty conditions
-
-### **3. `components_no` — Nitric Oxide**
-
-* From vehicle exhaust, power plants
-* Converts into NO2; indicator of high traffic pollution
-
-### **4. `components_no2` — Nitrogen Dioxide**
-
-* Toxic gas from vehicles and fossil fuels
-* Directly used in AQI calculation
-
-### **5. `components_o3` — Ozone (Ground-Level O3)**
-
-* Formed when sunlight reacts with NOx + VOCs
-* High on hot, sunny days
-* Major contributor to AQI in summer
-
-### **6. `components_so2` — Sulfur Dioxide**
-
-* Emitted from coal burning, industry
-* Causes respiratory issues
-* Spikes AQI during industrial activity
-
-### **7. `components_co` — Carbon Monoxide**
-
-* Traffic-heavy urban areas
-* Reduces oxygen transport; adds to AQI
-
-### **8. `components_nh3` — Ammonia**
-
-* From agriculture, waste, fertilizers
-* Combines with other gases to form PM2.5
+Air quality data for Pakistani cities is available but rarely modeled. Most AQI work focuses on large research datasets from the US or China. This project uses local data — Islamabad, Karachi, Lahore, Peshawar, and Quetta — to build a predictor that's actually relevant to where we live.
 
 ---
 
-# **Secondary Variables (Meteorological — Indirect Impact on AQI)**
+## Overview
 
-These do not directly increase AQI but influence pollutant formation, dispersion, and settling.
-
-### **9. `temperature_2m` — Temperature (°C)**
-
-* High temperatures increase ozone formation
-* Hot days = higher AQI due to O3
-
-### **10. `relative_humidity_2m` — Relative Humidity (%)**
-
-* High humidity increases PM2.5 absorption
-* Can worsen AQI during foggy/moist conditions
-
-### **11. `dew_point_2m` — Dew Point**
-
-* Related to moisture
-* Higher dew point = more water vapor → PM2.5 clumping
-
-### **12. `precipitation`**
-
-* Rain reduces PM2.5 and PM10
-* More rain = **lower AQI**
-
-### **13. `surface_pressure`**
-
-* High pressure = stagnant air = pollutants trapped
-* Low pressure = better air dispersion
-
-### **14. `wind_speed_10m` — Wind Speed**
-
-* Higher wind = pollutants dispersed = lower AQI
-* Low wind = pollution accumulates
-
-### **15. `wind_direction_10m` — Wind Direction**
-
-* Determines where pollution travels
-* Important for understanding sources
-
-### **16. `shortwave_radiation` — Solar Radiation**
-
-* More sunlight = more ozone formation
-* Influences daily AQI patterns
+| | |
+|---|---|
+| **Target variable** | `main_aqi` — Air Quality Index |
+| **Cities covered** | Islamabad, Karachi, Lahore, Peshawar, Quetta |
+| **Data range** | August 2021 – December 2024 |
+| **Best model** | Random Forest Regressor |
+| **R²** | 0.9992 |
+| **RMSE** | 0.0303 |
+| **MAE** | 0.0024 |
 
 ---
 
-# **Datetime Feature (Used to Extract Time Patterns)**
+## Dataset
 
-### **17. `datetime`**
+**Source:** [Pakistan Air Quality & Pollutant Concentrations — Kaggle](https://www.kaggle.com/datasets/hajramohsin/pakistan-air-quality-pollutant-concentrations)
 
-Not used directly. We extract:
+Features fall into three groups:
 
-* Hour
-* Day
-* Weekday
-* Month
-* Season
-* Weekend/weekday behavior
+- **Pollutants** (direct AQI drivers): PM2.5, PM10, NO, NO2, O3, SO2, CO, NH3
+- **Weather** (indirect factors): temperature, humidity, dew point, precipitation, wind speed/direction, solar radiation, surface pressure
+- **Time features** extracted from datetime: hour, day, weekday, month, season
 
-Pollution typically peaks during:
-
-* Morning & evening traffic hours
-* Winter (inversion layer)
-* Low wind, dry days
+Full column definitions are in [`/DATA_DICTIONARY.md`](/DATA_DICTIONARY.md).
 
 ---
 
-# Summary Table
+## What we found in EDA
 
-| Column               | Meaning           | Category     | Effect on AQI                 |
-| -------------------- | ----------------- | ------------ | ----------------------------- |
-| main_aqi             | Air Quality Index | Target       | Higher = worse air            |
-| components_pm2_5     | Fine particles    | Primary      | Strong positive effect        |
-| components_pm10      | Larger particles  | Primary      | Positive effect               |
-| components_no        | Nitric oxide      | Primary      | Traffic-related increase      |
-| components_no2       | Nitrogen dioxide  | Primary      | Direct AQI contributor        |
-| components_o3        | Ozone             | Primary      | Increases on hot days         |
-| components_so2       | Sulfur dioxide    | Primary      | Industrial contributor        |
-| components_co        | Carbon monoxide   | Primary      | Traffic/combustion            |
-| components_nh3       | Ammonia           | Primary      | Converts to PM2.5             |
-| temperature_2m       | Temperature       | Secondary    | Higher temp = more ozone      |
-| relative_humidity_2m | Humidity          | Secondary    | Higher humidity = more PM2.5  |
-| dew_point_2m         | Dew point         | Secondary    | Moisture increases PM levels  |
-| precipitation        | Rain              | Secondary    | Rain lowers AQI               |
-| surface_pressure     | Air pressure      | Secondary    | High pressure traps pollution |
-| wind_speed_10m       | Wind speed        | Secondary    | Higher wind = lower AQI       |
-| wind_direction_10m   | Wind direction    | Secondary    | Moves pollutants              |
-| shortwave_radiation  | Sunlight          | Secondary    | More sunlight = more ozone    |
-| datetime             | Timestamp         | Time Feature | Extract patterns              |
+- PM2.5 and PM10 are by far the strongest predictors of AQI
+- AQI is consistently worse in winter — temperature inversions trap pollutants near the surface
+- Rain has a clear and immediate effect on bringing AQI down
+- Ozone (O3) peaks in summer on high-radiation days
+- Weekday mornings and evenings show traffic-driven spikes
+
+---
+
+## Model Results
+
+We trained two models and compared them on a held-out test set (Jul–Dec 2024, unseen during training):
+
+| Model | R² | RMSE | MAE |
+|---|---|---|---|
+| Linear Regression | 0.4536 | 0.8024 | 0.6616 |
+| **Random Forest** | **0.9992** | **0.0303** | **0.0024** |
+
+Random Forest performed significantly better, handling the non-linear relationships between weather, pollutants, and AQI that linear regression couldn't capture.
+
+---
+
+## Streamlit App
+
+A simple web app where you enter pollutant and weather values and get an instant AQI prediction with visualizations.
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+> Live deployment :[https://air-quality-model.streamlit.app/].
+
+---
+
+## Project Structure
+
+```
+AirQualityModel/
+├── app.py                        # Streamlit web app
+├── data/
+│   ├── cleaned/                  # Preprocessed train/test CSVs
+│   └── models/
+│       ├── rf_model.pkl          # Trained Random Forest
+│       └── preprocessor.pkl      # Fitted StandardScaler pipeline
+├── notebooks/
+│   ├── 01_data_cleaning.ipynb
+│   ├── 02_eda.ipynb
+│   └── 04_modelTraining.ipynb
+├── docs/
+│   └── DATA_DICTIONARY.md
+└── requirements.txt
+```
+
+---
+
+## Future plans
+
+- Integrate live sensor or API data for real-time predictions
+- Add multi-day AQI forecasting
+- City-wise comparison dashboard
+
+---
+
+**Muhammad Ali** — BS Software Engineering, Sukkur IBA University  
+[GitHub](https://github.com/muhammadAli0900)
