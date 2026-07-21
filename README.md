@@ -8,8 +8,7 @@ A machine learning project that predicts the Air Quality Index (AQI) for major P
 
 ## Why this project
 
-Air quality data for Pakistani cities is available but rarely modeled. Most AQI work focuses on large research datasets from the US or China. This project uses local data — Islamabad, Karachi, Lahore, Peshawar, and Quetta — to build a predictor that's actually relevant to where we live.
-
+Air quality data for Pakistani cities exists but has rarely been put to use in predictive modeling. Most AQI research is built on datasets from the US or China. This project focuses on five Pakistani cities (Islamabad, Karachi, Lahore, Peshawar, and Quetta) to build something that reflects the air quality reality of where we actually live.
 ---
 
 ## Overview

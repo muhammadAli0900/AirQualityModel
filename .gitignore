@@ -10,6 +10,9 @@ __pycache__/
 # Not needed py files
 # ========================
 extarctingcsvnames.py
+filenames.py
+info1.py
+
 
 
 # ========================
